@@ -44,4 +44,8 @@ model Resource{
   author_id String
   author User @relation(fields: [author_id], references: [id])
 
+  type String?
+
+ createdAt      DateTime?     @default(now())
+ updatedAt      DateTime?    @updatedAt
 }
