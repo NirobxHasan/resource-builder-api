@@ -27,7 +27,7 @@ export class AuthService {
             },
             {
                 secret:'at-strategy',
-                expiresIn: 60 * 15
+                expiresIn: 60 * 30
             }),
 
 
@@ -92,7 +92,7 @@ export class AuthService {
         
         const tokens = await this.getTokens(user.id , user.email)
         await this.updateRtHash(user.id, tokens.refresh_token)
-console.log(tokens        )
+
         return tokens
     }
     async logout(userId: string){

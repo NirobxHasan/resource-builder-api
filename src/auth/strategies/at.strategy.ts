@@ -16,11 +16,10 @@ export class AtStrategy extends PassportStrategy(Strategy,'jwt'){
     }
 
     private static extractJWT(req: Request): string | null{
+        console.log('cokkiessssssss',req.cookies)
         if(req.cookies && 'access_token' in req.cookies && req.cookies['access_token'].length>0){
             return req.cookies['access_token']
         }
-
-        console.log(req.cookies)
         return null
     }
 

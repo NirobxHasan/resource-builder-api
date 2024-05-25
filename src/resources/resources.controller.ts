@@ -1,6 +1,8 @@
-import { Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post, UseGuards } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { AtGuard } from 'src/common/guards';
+import { GetCurrentUserId } from 'src/common/decorators';
+import { CreateResourceDto } from './dto/CreateResource.dto';
 
 @Controller('resources')
 export class ResourcesController {
@@ -20,12 +22,17 @@ export class ResourcesController {
 
     @UseGuards(AtGuard)
     @Get('/')
-    getUserResources(){
-        return {msg: 'All Resource'}
+    getUserResources(@GetCurrentUserId() userId: string,){
+        return this.resourceService.getUserResources(userId)
     }
 
+
+    @UseGuards(AtGuard)
+    @HttpCode(HttpStatus.OK)
     @Post('/')
-    createResouce(){}
+    createResouce(@Body() dto:CreateResourceDto ,@GetCurrentUserId() userId: string){
+        return this.resourceService.createResource(dto, userId)
+    }
 
     @Patch('/')
     updateResource(){}
