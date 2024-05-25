@@ -1,9 +1,10 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 import { Tokens } from './types';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { AtGuard, RtGuard } from 'src/common/guards';
 import { GetCurrentUser, GetCurrentUserId } from 'src/common/decorators';
 
@@ -17,14 +18,20 @@ export class AuthController {
 
     @Post('/local/singup')
     @HttpCode(HttpStatus.CREATED)
-    signupLocal(@Body() dto:AuthDto):Promise<Tokens>{
-        return this.authService.signupLocal(dto)
+    async signupLocal(@Body() dto:AuthDto,@Res() res:Response):Promise<void>{
+        const tokens = await this.authService.signupLocal(dto)
+        res.cookie('access_token', tokens.access_token,{ httpOnly: true } )
+        res.cookie('refresh_token', tokens.access_token,{ httpOnly: true } )
+        res.send(tokens)
     }
 
     @Post('/local/singin')
     @HttpCode(HttpStatus.OK)
-    signinLocal(@Body() dto:AuthDto):Promise<Tokens>{
-        return this.authService.signinLocal(dto)
+    async signinLocal(@Body() dto:AuthDto, @Res() res:Response):Promise<void>{
+        const tokens = await this.authService.signinLocal(dto)
+        res.cookie('access_token', tokens.access_token,{ httpOnly: true } )
+        res.cookie('refresh_token', tokens.access_token,{ httpOnly: true } )
+        res.send(tokens)
     }
 
 

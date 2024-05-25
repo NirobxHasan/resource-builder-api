@@ -92,6 +92,7 @@ export class AuthService {
         
         const tokens = await this.getTokens(user.id , user.email)
         await this.updateRtHash(user.id, tokens.refresh_token)
+console.log(tokens        )
         return tokens
     }
     async logout(userId: string){
