@@ -21,7 +21,7 @@ export class AuthController {
     async signupLocal(@Body() dto:AuthDto,@Res() res:Response):Promise<void>{
         const tokens = await this.authService.signupLocal(dto)
         res.cookie('access_token', tokens.access_token,{ httpOnly: true } )
-        res.cookie('refresh_token', tokens.access_token,{ httpOnly: true } )
+        res.cookie('refresh_token', tokens.refresh_token,{ httpOnly: true } )
         res.send(tokens)
     }
 
@@ -30,7 +30,7 @@ export class AuthController {
     async signinLocal(@Body() dto:AuthDto, @Res() res:Response):Promise<void>{
         const tokens = await this.authService.signinLocal(dto)
         res.cookie('access_token', tokens.access_token,{ httpOnly: true } )
-        res.cookie('refresh_token', tokens.access_token,{ httpOnly: true } )
+        res.cookie('refresh_token', tokens.refresh_token,{ httpOnly: true } )
         res.send(tokens)
     }
 
@@ -39,8 +39,13 @@ export class AuthController {
     @UseGuards(AtGuard)
     @Post('/logout')
     @HttpCode(HttpStatus.OK)
-    logout(@GetCurrentUserId() userId: string){
-        return this.authService.logout(userId) 
+    async logout(@GetCurrentUserId() userId: string, @Res() res:Response){
+        await this.authService.logout(userId) 
+        res.clearCookie('access_token');
+        res.clearCookie('refresh_token');
+        res.send({
+            status:"success"
+        })
     }
     // logout(@Req() req: Request){
     //     const user = req.user;
@@ -51,8 +56,10 @@ export class AuthController {
     @UseGuards(RtGuard)
     @Post('/refresh')
     @HttpCode(HttpStatus.OK)
-    refreshTokens(@GetCurrentUserId() userId: string, @GetCurrentUser('refreshToken') refreshToken: string){
-        // const user = req.user;
-        return this.authService.refreshTokens(userId,refreshToken)
+    async refreshTokens(@GetCurrentUserId() userId: string, @GetCurrentUser('refreshToken') refreshToken: string,@Res() res:Response){
+        const tokens = await this.authService.refreshTokens(userId,refreshToken)
+        res.cookie('access_token', tokens.access_token,{ httpOnly: true } )
+        res.cookie('refresh_token', tokens.refresh_token,{ httpOnly: true } )
+        res.send(tokens)
     }
 }

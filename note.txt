@@ -1,1 +1,3 @@
 column add: npx prisma migrate dev --name type_added 
+
+after git pull: npx prisma generate
