@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateModuleDto } from './dto';
+import { CreateModuleDto, UpdateModuleDto } from './dto';
 
 @Injectable()
 export class ModulesService {
@@ -33,6 +33,15 @@ export class ModulesService {
                 ...dto,
                 resource_id: resourceId
             }
+        });
+    }
+
+    async update(id: string, dto: UpdateModuleDto) {
+        return this.prisma.module.update({
+            where: {
+                id
+            },
+            data: dto
         });
     }
 }

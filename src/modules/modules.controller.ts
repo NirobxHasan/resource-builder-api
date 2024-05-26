@@ -33,6 +33,8 @@ export class ModulesController {
         return this.moduleService.create(resourceid, dto);
     }
 
-    @Patch()
-    update(@Body() dto: UpdateModuleDto) {}
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() dto: UpdateModuleDto) {
+        return this.moduleService.update(id, dto);
+    }
 }
