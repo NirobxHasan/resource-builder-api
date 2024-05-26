@@ -12,7 +12,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     catch(exception: HttpException, context: ExecutionContext) {
         const response = context.switchToHttp().getResponse();
         const status = exception.getStatus();
-        const message = exception.message;
+        const errorMessage = exception.message;
 
         const errorData = exception.getResponse();
 
@@ -26,14 +26,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
             return response.status(status).json({
                 success: false,
                 statusCode: status,
-                error: message,
-                detailedErrors: detailsMsg
+                error: errorMessage,
+                message: detailsMsg
             });
         }
         return response.status(status).json({
             success: false,
             statusCode: status,
-            error: message
+            error: errorMessage
         });
     }
 }
