@@ -46,6 +46,36 @@ model Resource{
 
   type String?
 
- createdAt      DateTime?     @default(now())
- updatedAt      DateTime?    @updatedAt
+
+  modules Module[]
+
+  createdAt      DateTime?     @default(now())
+  updatedAt      DateTime?    @updatedAt
 }
+
+
+
+model Module{
+
+  id  String       @id @default(uuid())
+  title String  @db.VarChar(255)
+  content Json 
+  is_lock Boolean @default(false)
+
+  resource_id String
+  resource Resource @relation(fields:  [resource_id], references: [id] )
+
+
+  createdAt      DateTime?     @default(now())
+  updatedAt      DateTime?    @updatedAt
+  @@map("modules")
+}
+
+
+// model Order{
+//   id  String       @id @default(uuid())
+  
+//   createdAt      DateTime?     @default(now())
+//   updatedAt      DateTime?    @updatedAt
+//   @@map("orders")
+// }
