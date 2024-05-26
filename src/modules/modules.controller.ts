@@ -5,6 +5,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
     UseGuards
 } from '@nestjs/common';
 import { AtGuard } from 'src/common/guards';
@@ -19,17 +20,16 @@ export class ModulesController {
     @Get(':id')
     findOne(@Param('id') id: string) {}
 
-    @Get('/resource/:resourceid')
-    findMany(@Param('resourceid') resourceid: string) {
+    @Get()
+    findMany(@Query('resourceid') resourceid: string) {
         return this.moduleService.findMany(resourceid);
     }
 
-    @Post('/resource/:resourceid')
+    @Post()
     create(
-        @Param('resourceid') resourceid: string,
+        @Query('resourceid') resourceid: string,
         @Body() dto: CreateModuleDto
     ) {
-        console.log(resourceid);
         return this.moduleService.create(resourceid, dto);
     }
 
