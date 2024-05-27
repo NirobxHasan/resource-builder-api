@@ -1,11 +1,17 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator";
+import {
+    IsBoolean,
+    IsEmpty,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+    Min
+} from 'class-validator';
 
-export class CreateResourceDto{
-
+export class CreateResourceDto {
     @IsNotEmpty()
     @IsString()
     title: string;
-
 
     @IsOptional()
     @IsString()
@@ -13,7 +19,7 @@ export class CreateResourceDto{
 
     @IsOptional()
     @IsString()
-    cover_image?:string;
+    cover_image?: string;
 
     @IsOptional()
     @IsString()
@@ -22,20 +28,19 @@ export class CreateResourceDto{
     @IsNumber()
     @Min(0)
     @IsOptional()
-    price?:number
+    price?: number;
 
     @IsNumber()
     @Min(0)
     @IsOptional()
-    discount_price?:number;
+    discount_price?: number;
 
+    @IsEmpty()
     @IsOptional()
     @IsString()
     code?: string;
 
-
     @IsOptional()
     @IsBoolean()
     is_published?: boolean;
-    
 }

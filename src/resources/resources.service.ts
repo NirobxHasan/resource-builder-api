@@ -34,7 +34,8 @@ export class ResourcesService {
         const data = await this.prisma.resource.create({
             data: {
                 ...dto,
-                author_id: userId
+                author_id: userId,
+                code: this.generateUniqueCode(8)
             }
         });
         return data;
@@ -47,5 +48,16 @@ export class ResourcesService {
             },
             data: dto
         });
+    }
+
+    generateUniqueCode(length) {
+        // Define all characters
+        const allChars =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        // Use random.sample to pick random characters
+        return [...crypto.getRandomValues(new Uint8Array(length))]
+            .map((val) => allChars[val % allChars.length])
+            .join('');
     }
 }
