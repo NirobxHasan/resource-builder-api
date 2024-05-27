@@ -23,10 +23,9 @@ export class ResourceAccessController {
     }
 
     @Post('join-request')
-    joinReuest(
-        @Body() dto: JoinReuestDto,
-        @GetCurrentUserId() userId: string
-    ) {}
+    joinReuest(@Body() dto: JoinReuestDto, @GetCurrentUserId() userId: string) {
+        return this.resourceAccessService.joinRequest(dto.resourceId, userId);
+    }
 
     @Post('cancel')
     cancelRequest(

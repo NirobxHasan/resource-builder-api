@@ -16,4 +16,15 @@ export class ResourceAccessService {
 
         return data;
     }
+
+    async joinRequest(resourceId: string, userId: string) {
+        const data = await this.prisma.resourceUser.create({
+            data: {
+                resource_id: resourceId,
+                user_id: userId
+            }
+        });
+
+        return data;
+    }
 }
