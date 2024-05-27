@@ -7,9 +7,10 @@ import { SuccessInterceptor } from './common/interceptors/success.interception';
 import { ModulesModule } from './modules/modules.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ResourcesModule } from './resources/resources.module';
+import { ResourceAccessModule } from './resource-access/resource-access.module';
 
 @Module({
-    imports: [AuthModule, PrismaModule, ResourcesModule, ModulesModule],
+    imports: [AuthModule, PrismaModule, ResourcesModule, ModulesModule, ResourceAccessModule],
     controllers: [],
     providers: [
         // ...,

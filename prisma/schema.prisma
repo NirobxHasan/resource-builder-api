@@ -90,6 +90,15 @@ model ResourceUser{
 
   user User @relation(fields: [user_id], references: [id])
   rescource Resource @relation(fields: [resource_id], references: [id])
+
+  status Status @default(PENDDING)
   joining_time DateTime?     @default(now())
   @@id([user_id, resource_id])
+}
+
+enum Status {
+  PENDDING
+  ACCEPTED
+  REJECTED
+  CANCELED
 }
