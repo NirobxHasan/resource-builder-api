@@ -18,7 +18,9 @@ export class ResourceAccessController {
     constructor(private resourceAccessService: ResourceAccessService) {}
 
     @Get()
-    findResource(@Query('resourceid') resourceId: string) {}
+    findResource(@Query('code') code: string) {
+        return this.resourceAccessService.findResourceById(code);
+    }
 
     @Post('join-request')
     joinReuest(
