@@ -1,0 +1,10 @@
+services:
+    - type: web
+      name: nestjs-app
+      env: node
+      plan: free
+      buildCommand: npm install && npm run build
+      startCommand: npm run start:prod
+      envVars:
+          - key: DATABASE_URL
+            value: postgresql://ecommercedb_owner:8esWNm0auCdG@ep-broad-flower-a545gy99.us-east-2.aws.neon.tech/resources_db?sslmode=require
