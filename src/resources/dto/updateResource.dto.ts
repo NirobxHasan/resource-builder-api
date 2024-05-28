@@ -1,5 +1,4 @@
-import { PartialType } from "@nestjs/mapped-types";
-import { CreateResourceDto } from "./createResource.dto";
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateResourceDto } from './CreateResource.dto';
 
-
-export class UpdateResourceDto extends PartialType(CreateResourceDto){}
+export class UpdateResourceDto extends PartialType(CreateResourceDto) {}
