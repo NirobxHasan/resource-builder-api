@@ -27,6 +27,9 @@ export class ResourceAccessController {
         return this.resourceAccessService.joinRequest(dto.resourceId, userId);
     }
 
+    @Get('all-request')
+    allRequest() {}
+
     @Post('cancel')
     cancelRequest(
         @Body() dto: CancelAccessDto,

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateResourceDto, UpdateResourceDto } from './dto';
+import { CreateResourceDto, HandleRequestDto, UpdateResourceDto } from './dto';
 
 @Injectable()
 export class ResourcesService {
@@ -20,10 +20,11 @@ export class ResourcesService {
         return data;
     }
 
-    async findOne(id: string) {
+    async findOne(id: string, userId: string) {
         const data = await this.prisma.resource.findUnique({
             where: {
-                id
+                id,
+                author_id: userId
             }
         });
         if (!data) throw new NotFoundException();
@@ -48,6 +49,54 @@ export class ResourcesService {
             },
             data: dto
         });
+    }
+
+    async joinRequest(recourceId: string, userId: string) {
+        const data = await this.prisma.resourceUser.findMany({
+            where: {
+                rescource: {
+                    id: recourceId,
+                    author_id: userId
+                }
+            },
+            include: {
+                user: true
+            }
+        });
+
+        return data;
+    }
+
+    async handleRequest(dto: HandleRequestDto, userId: string) {
+        const resourceUser = await this.prisma.resourceUser.findFirst({
+            where: {
+                resource_id: dto.resourceId,
+                user_id: dto.requestUserId,
+                rescource: {
+                    author_id: userId
+                }
+            }
+        });
+
+        if (!resourceUser) {
+            throw new NotFoundException(
+                'This entry not found or you do not have permission to update it'
+            );
+        }
+
+        const data = await this.prisma.resourceUser.update({
+            where: {
+                user_id_resource_id: {
+                    resource_id: dto.resourceId,
+                    user_id: dto.requestUserId
+                }
+            },
+            data: {
+                status: dto.action
+            }
+        });
+
+        return data;
     }
 
     generateUniqueCode(length) {
