@@ -1,4 +1,10 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+    IsBoolean,
+    IsJSON,
+    IsNotEmpty,
+    IsOptional,
+    IsString
+} from 'class-validator';
 
 export class CreateModuleDto {
     @IsNotEmpty()
@@ -6,7 +12,7 @@ export class CreateModuleDto {
     title: string;
 
     @IsOptional()
-    @IsString()
+    @IsJSON()
     content: string;
 
     @IsOptional()

@@ -70,7 +70,7 @@ model Module{
 
   id  String       @id @default(uuid())
   title String  @db.VarChar(255)
-  content String 
+  content Json? 
   is_lock Boolean @default(false)
 
   resource_id String
