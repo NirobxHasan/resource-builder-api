@@ -8,7 +8,7 @@
 
 {
     // Theme
-    "workbench.colorTheme": "Dracula",
+    "workbench.colorTheme": "Winter is Coming (Dark Blue)",
 
     // config related to code formatting
     "editor.fontSize": 16,

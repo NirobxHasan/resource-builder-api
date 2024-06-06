@@ -12,6 +12,7 @@ import { GetCurrentUser, GetCurrentUserId } from 'src/common/decorators';
 import { AtGuard, RtGuard } from 'src/common/guards';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
+import { AuthUserAuthGuard } from './guards/auth.guard';
 
 //Follow this URL: https://youtu.be/uAKzFhE3rxU?si=Ri6k7YT0ojtpDB5t
 @Controller('auth')
@@ -74,5 +75,10 @@ export class AuthController {
         res.cookie('access_token', tokens.access_token, { httpOnly: true });
         res.cookie('refresh_token', tokens.refresh_token, { httpOnly: true });
         res.send(tokens);
+    }
+    @UseGuards(AuthUserAuthGuard)
+    @Post('/me')
+    async hello(@GetCurrentUserId() userId: string) {
+        return userId;
     }
 }

@@ -13,6 +13,7 @@ import {
 import { GetCurrentUserId } from 'src/common/decorators';
 import { AtGuard } from 'src/common/guards';
 
+import { UserAuthGuard } from 'src/common/guards/auth.guard';
 import { CreateResourceDto, HandleRequestDto, UpdateResourceDto } from './dto';
 import { ResourcesService } from './resources.service';
 
@@ -29,7 +30,7 @@ export class ResourcesController {
 
     //User
 
-    @UseGuards(AtGuard)
+    @UseGuards(UserAuthGuard)
     @Get('/')
     getUserResources(@GetCurrentUserId() userId: string) {
         return this.resourceService.getUserResources(userId);
