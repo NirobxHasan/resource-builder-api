@@ -18,7 +18,9 @@ export class ModulesController {
     constructor(private moduleService: ModulesService) {}
 
     @Get(':id')
-    findOne(@Param('id') id: string) {}
+    findOne(@Param('id') id: string) {
+        return this.moduleService.findOne(id);
+    }
 
     @Get()
     findMany(@Query('resourceid') resourceid: string) {
