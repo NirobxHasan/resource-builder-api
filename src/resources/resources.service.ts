@@ -25,6 +25,17 @@ export class ResourcesService {
             where: {
                 id,
                 author_id: userId
+            },
+            include: {
+                modules: {
+                    select: {
+                        id: true,
+                        title: true
+                    },
+                    orderBy: {
+                        createdAt: 'asc'
+                    }
+                }
             }
         });
         if (!data) throw new NotFoundException();
