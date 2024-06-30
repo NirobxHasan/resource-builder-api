@@ -9,11 +9,11 @@ export class S3Service {
 
     constructor() {
         this.s3 = new AWS.S3({
-            accessKeyId: 'AKIAWPGQVZY5HDCIERKC',
-            secretAccessKey: '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',
-            region: 'us-east-1'
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            region: process.env.AWS_REGION
         });
-        this.bucketName = 'resource-builder';
+        this.bucketName = process.env.AWS_S3_BUCKET_NAME;
     }
     async uploadFile(file: Express.Multer.File): Promise<any> {
         const uploadResult = await this.s3
@@ -35,7 +35,7 @@ export class S3Service {
             )
             .promise();
 
-        return uploadResult;
+        return uploadResult.Location;
     }
 
     async getPresignedUrl(key: string): Promise<string> {
