@@ -9,6 +9,7 @@ import { ModulesModule } from './modules/modules.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ResourceAccessModule } from './resource-access/resource-access.module';
 import { ResourcesModule } from './resources/resources.module';
+import { S3Module } from './s3/s3.module';
 
 @Module({
     imports: [
@@ -17,7 +18,8 @@ import { ResourcesModule } from './resources/resources.module';
         PrismaModule,
         ResourcesModule,
         ModulesModule,
-        ResourceAccessModule
+        ResourceAccessModule,
+        S3Module
     ],
     controllers: [],
     providers: [
