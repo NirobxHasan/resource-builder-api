@@ -21,6 +21,9 @@ export class ModulesService {
         const data = await this.prisma.module.findMany({
             where: {
                 resource_id: resourceId
+            },
+            orderBy: {
+                createdAt: 'asc'
             }
         });
         if (!data) throw new NotFoundException();
