@@ -68,7 +68,8 @@ export class ResourcesService {
                 rescource: {
                     id: recourceId,
                     author_id: userId
-                }
+                },
+                status: 'PENDDING'
             },
             include: {
                 user: true

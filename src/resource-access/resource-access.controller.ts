@@ -3,6 +3,8 @@ import {
     Controller,
     Delete,
     Get,
+    HttpCode,
+    HttpStatus,
     Post,
     Query,
     UseGuards
@@ -23,7 +25,21 @@ export class ResourceAccessController {
     }
 
     @Post('join-request')
-    joinReuest(@Body() dto: JoinReuestDto, @GetCurrentUserId() userId: string) {
+    @HttpCode(HttpStatus.OK)
+    async joinReuest(
+        @Body() dto: JoinReuestDto,
+        @GetCurrentUserId() userId: string
+    ) {
+        const resourceAccessData =
+            await this.resourceAccessService.findResourceAccess(
+                dto.resourceId,
+                userId
+            );
+        console.log(resourceAccessData);
+
+        if (resourceAccessData?.status === 'PENDDING') {
+            return { message: 'Request already exists' };
+        }
         return this.resourceAccessService.joinRequest(dto.resourceId, userId);
     }
 
@@ -44,4 +60,13 @@ export class ResourceAccessController {
         @Body() dto: LeaveAccessDto,
         @GetCurrentUserId() userId: string
     ) {}
+
+    //For ALL
+    @Get('all-resourse-users')
+    async getAllUsers(
+        @Query('resourceId') resourceId: string,
+        @GetCurrentUserId() authorId: string
+    ) {
+        return this.resourceAccessService.allResourceUser(resourceId, authorId);
+    }
 }

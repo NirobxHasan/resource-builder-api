@@ -25,12 +25,12 @@ import { S3Module } from './s3/s3.module';
     providers: [
         // ...,
         {
-            provide: APP_INTERCEPTOR,
-            useClass: SuccessInterceptor
-        },
-        {
             provide: APP_FILTER,
             useClass: HttpExceptionFilter
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: SuccessInterceptor
         }
     ]
 })
