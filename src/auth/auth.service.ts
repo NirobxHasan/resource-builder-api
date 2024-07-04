@@ -120,4 +120,15 @@ export class AuthService {
         await this.updateRtHash(user.id, tokens.refresh_token);
         return tokens;
     }
+
+    googleLogin(req) {
+        if (!req.user) {
+            return 'No user from Google';
+        }
+
+        return {
+            message: 'User information from Google',
+            user: req.user
+        };
+    }
 }

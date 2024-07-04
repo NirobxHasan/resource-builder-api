@@ -1,12 +1,15 @@
 import {
     Body,
     Controller,
+    Get,
     HttpCode,
     HttpStatus,
     Post,
+    Req,
     Res,
     UseGuards
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { GetCurrentUser, GetCurrentUserId } from 'src/common/decorators';
 import { AtGuard, RtGuard } from 'src/common/guards';
@@ -81,4 +84,16 @@ export class AuthController {
     async hello(@GetCurrentUserId() userId: string) {
         return userId;
     }
+
+    @Get('google')
+    @UseGuards(AuthGuard('google'))
+    async googleAuth(@Req() req) {}
+
+    @Get('google/redirect')
+    @UseGuards(AuthGuard('google'))
+    googleAuthRedirect(@Req() req) {
+        return this.authService.googleLogin(req);
+    }
 }
+
+// ya29.a0AXooCgtdV24bnwptt65t-22ZrIJ3iNH5OdFetCeXWLRZKMKtVLOV_l-Dp-kwCeEsaqu2MMRoczVnW0oxTjXMIyjlN9Vb6WrQaNe8jwQ4IZ9LZHZauSpgNPWI1Oct9LqveDln4YfgCMinNpvPMcJbaF4rh3PK7pqhjMG9aCgYKAZASARMSFQHGX2MiT7NIHbaWCfm-A2lRv9VO2A0171
