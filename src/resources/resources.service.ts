@@ -72,7 +72,13 @@ export class ResourcesService {
                 status: 'PENDDING'
             },
             include: {
-                user: true
+                user: {
+                    select: {
+                        first_name: true,
+                        last_name: true,
+                        email: true
+                    }
+                }
             }
         });
 
