@@ -25,6 +25,6 @@ export class SignupDto extends AuthDto {
     last_name: string;
 
     @IsOptional()
-    @IsPhoneNumber()
+    @IsPhoneNumber('BD')
     phone: string;
 }

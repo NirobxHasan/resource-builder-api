@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+    ConflictException,
+    ForbiddenException,
+    Injectable
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -46,11 +50,27 @@ export class AuthService {
         };
     }
 
+    async findUser(email: string) {
+        const data = await this.prisma.user.findUnique({
+            where: {
+                email: email
+            }
+        });
+        return data;
+    }
+
     async signupLocal(dto: SignupDto): Promise<Tokens> {
+        if (await this.findUser(dto.email)) {
+            throw new ConflictException('This email is already registered');
+        }
+
         const hash = await this.hashData(dto.password);
         const newUser = await this.prisma.user.create({
             data: {
                 email: dto.email,
+                first_name: dto.first_name,
+                last_name: dto.last_name,
+                phone: dto.phone,
                 hash
             }
         });
@@ -60,24 +80,20 @@ export class AuthService {
         return tokens;
     }
 
-    async updateRtHash(userId: string, rt: string) {
-        const hash = await this.hashData(rt);
+    async updateRtHash(userId: string, refreshToken: string) {
+        const refreshTokenHash = await this.hashData(refreshToken);
         await this.prisma.user.update({
             where: {
                 id: userId
             },
             data: {
-                hashRt: hash
+                hashRt: refreshTokenHash
             }
         });
     }
 
     async signinLocal(dto: AuthDto): Promise<Tokens> {
-        const user = await this.prisma.user.findUnique({
-            where: {
-                email: dto.email
-            }
-        });
+        const user = await this.findUser(dto.email);
 
         if (!user) throw new ForbiddenException('Access Denied');
 
@@ -121,14 +137,31 @@ export class AuthService {
         return tokens;
     }
 
-    googleLogin(req) {
+    async googleLogin(req): Promise<Tokens> {
         if (!req.user) {
-            return 'No user from Google';
+            throw new ForbiddenException('Access Denied');
         }
 
-        return {
-            message: 'User information from Google',
-            user: req.user
-        };
+        let user = await this.findUser(req.user.email);
+
+        // for new user
+        if (!user) {
+            const newUser = await this.prisma.user.create({
+                data: {
+                    email: req.user.email,
+                    first_name: req.user.first_name,
+                    last_name: req.user.last_name,
+                    auth_provider: 'GOOGLE'
+                }
+            });
+            const tokens = await this.getTokens(newUser.id, newUser.email);
+            await this.updateRtHash(newUser.id, tokens.refresh_token);
+            return tokens;
+        }
+
+        //For existing user
+        const tokens = await this.getTokens(user.id, user.email);
+        await this.updateRtHash(user.id, tokens.refresh_token);
+        return tokens;
     }
 }

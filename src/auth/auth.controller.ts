@@ -91,8 +91,11 @@ export class AuthController {
 
     @Get('google/redirect')
     @UseGuards(AuthGuard('google'))
-    googleAuthRedirect(@Req() req) {
-        return this.authService.googleLogin(req);
+    async googleAuthRedirect(@Req() req, @Res() res: Response) {
+        const tokens = await this.authService.googleLogin(req);
+        res.cookie('access_token', tokens.access_token, { httpOnly: true });
+        res.cookie('refresh_token', tokens.refresh_token, { httpOnly: true });
+        res.send(tokens);
     }
 }
 
