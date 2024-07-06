@@ -14,7 +14,7 @@ import { Response } from 'express';
 import { GetCurrentUser, GetCurrentUserId } from 'src/common/decorators';
 import { AtGuard, RtGuard } from 'src/common/guards';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { AuthDto, SignupDto } from './dto';
 import { AuthUserAuthGuard } from './guards/auth.guard';
 
 //Follow this URL: https://youtu.be/uAKzFhE3rxU?si=Ri6k7YT0ojtpDB5t
@@ -25,7 +25,7 @@ export class AuthController {
     @Post('/local/singup')
     @HttpCode(HttpStatus.CREATED)
     async signupLocal(
-        @Body() dto: AuthDto,
+        @Body() dto: SignupDto,
         @Res() res: Response
     ): Promise<void> {
         const tokens = await this.authService.signupLocal(dto);

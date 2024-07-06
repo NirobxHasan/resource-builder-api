@@ -25,13 +25,20 @@ model User {
   phone          String?      @unique
   email          String       @unique
   email_secondary String?     @unique
-  hash           String
+  auth_provider AuthProvider @default(LOCAL)
+  hash           String?
   hashRt         String?
   resources Resource[]
   resources_access  ResourceUser[]
 
   @@map("users")
 
+}
+
+
+enum AuthProvider {
+  LOCAL
+  GOOGLE
 }
 
 
