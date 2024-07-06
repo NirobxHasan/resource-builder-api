@@ -80,7 +80,7 @@ export class AuthController {
         res.send(tokens);
     }
     @UseGuards(AuthUserAuthGuard)
-    @Post('/me')
+    @Get('/me')
     async hello(@GetCurrentUserId() userId: string) {
         return userId;
     }
@@ -95,7 +95,8 @@ export class AuthController {
         const tokens = await this.authService.googleLogin(req);
         res.cookie('access_token', tokens.access_token, { httpOnly: true });
         res.cookie('refresh_token', tokens.refresh_token, { httpOnly: true });
-        res.send(tokens);
+        // window.location.href = 'http://localhost:3000/auth/google'; // U
+        res.redirect('http://localhost:8000/auth/google');
     }
 }
 
