@@ -28,7 +28,7 @@ export class AuthService {
                 },
                 {
                     secret: 'at-strategy',
-                    expiresIn: 60 * 60 * 15
+                    expiresIn: '15m'
                 }
             ),
 
@@ -39,7 +39,7 @@ export class AuthService {
                 },
                 {
                     secret: 'rt-strategy',
-                    expiresIn: 60 * 60 * 80
+                    expiresIn: '1y'
                 }
             )
         ]);
