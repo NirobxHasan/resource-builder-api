@@ -21,6 +21,8 @@ export class AuthUserAuthGuard implements CanActivate {
                 secret: 'at-strategy'
             });
             console.log(payload);
+
+            request.user = payload;
             return true;
         } catch (error) {
             console.log(error);

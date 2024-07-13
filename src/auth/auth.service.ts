@@ -142,6 +142,8 @@ export class AuthService {
             throw new ForbiddenException('Access Denied');
         }
 
+        console.log('google user', req.user);
+
         let user = await this.findUser(req.user.email);
 
         // for new user

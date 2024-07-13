@@ -79,6 +79,7 @@ export class AuthController {
         res.cookie('refresh_token', tokens.refresh_token, { httpOnly: true });
         res.send(tokens);
     }
+
     @UseGuards(AuthUserAuthGuard)
     @Get('/me')
     async hello(@GetCurrentUserId() userId: string) {
